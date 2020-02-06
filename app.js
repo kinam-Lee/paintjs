@@ -1,17 +1,23 @@
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext('2d');
+const colors = document.getElementsByClassName("jsColor"); 
 
 canvas.width = 700; 
 canvas.height = 700 ; 
 
 ctx.lineWidth = 2.5; 
-ctx.strockStyle = "#060606"; 
+ctx.strokeStyle = "#060606"; 
 
 let painting = false; 
 
 function stopPainting(){
     painting = false;
 }
+
+function startPainting(){
+    painting = true;
+}
+
 function onMouseMove(event){
     //console.log(event) ; 
     const x = event.offsetX; 
@@ -27,23 +33,35 @@ function onMouseMove(event){
         ctx.lineTo(x,y);
         ctx.stroke()
         // console.log("line 생성-", x, y)
+        //console.log("strokeColor", ctx.strokeStyle);
     }
 
 }
 
-function onMouseDown(event){
-    painting = true;
-}
 
 function onMouseUp(event){
     stopPainting();
+}
+
+function handleColorClick(event){
+    // 아래 로그에 찍히는 많은 속성중 background 속성의 값을 활용한다. 
+    //console.log(event.target.style); 
+    const rgbColor = event.target.style.backgroundColor;
+    //console.log(rgbColor);
+    ctx.strokeStyle = rgbColor;
+    //console.log(ctx.strokeStyle);
 }
 
 
 
 if(canvas){
     canvas.addEventListener("mousemove", onMouseMove); 
-    canvas.addEventListener("mousedown", onMouseDown);
+    canvas.addEventListener("mousedown", startPainting);
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
 }
+
+//console.log(Array.from(colors));
+//console.log(colors);
+
+Array.from(colors).forEach(colorTemp => colorTemp.addEventListener("click", handleColorClick));
