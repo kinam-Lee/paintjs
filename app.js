@@ -4,11 +4,25 @@ const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
 
-canvas.width = 700; 
-canvas.height = 700 ; 
 
+const INITIAL_COLOR = "060606" ; 
+const CANVAS_SIZE = 700; 
+
+canvas.width = CANVAS_SIZE; 
+canvas.height = CANVAS_SIZE ; 
+
+ctx.strokeStyle = INITIAL_COLOR; 
 ctx.lineWidth = 2.5; 
-ctx.strokeStyle = "#060606"; 
+
+
+/*
+// fillStyle : 캔버스의 배경색을 바꾸는것, strokeStyle : 도형이나 line의 색을 변경하는것
+ctx.fillStyle = "green";
+ctx.fillRect(0, 0, 50, 70);
+
+ctx.fillStyle = "yellow";
+ctx.fillRect(100, 100, 50, 70);
+*/
 
 let painting = false; 
 let filling = false; 
@@ -52,6 +66,7 @@ function handleColorClick(event){
     const rgbColor = event.target.style.backgroundColor;
     //console.log(rgbColor);
     ctx.strokeStyle = rgbColor;
+    ctx.fillStyle = rgbColor;
     //console.log(ctx.strokeStyle);
 }
 
@@ -71,11 +86,18 @@ function handleModeClick(event){
     }
 }
 
+function handleCanvasClick(){
+    if(filling){
+        ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE); 
+    }
+}
+
 if(canvas){
     canvas.addEventListener("mousemove", onMouseMove); 
     canvas.addEventListener("mousedown", startPainting);
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
+    canvas.addEventListener("click", handleCanvasClick);
 }
 
 //console.log(Array.from(colors));
